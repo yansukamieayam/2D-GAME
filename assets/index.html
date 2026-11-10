@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXEL 2D-GAMES</title>
+    <style>
+        /* 1. Mengimpor Font Pixel dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        /* 2. Pengaturan Latar Belakang dan Layout Utama */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Press Start 2P', monospace; /* Font gaya pixel */
+            color: #000000;
+            background-color: #f43131;
+            background-image: url('latar belakang lobi.jpg');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-attachment: fixed;
+            image-rendering: pixelated; /* Menjaga kejelasan elemen piksel */
+        }
+
+        /* 3. Kontainer Utama Lobi */
+        .lobby-container {
+            text-align: center;
+            width: 320px;
+        }
+
+        /* 4. Judul Game Piksel */
+        .game-title {
+            font-size: 1.6rem;
+            margin-bottom: 200px;
+            line-height: 1.5;
+            color: #ffffff;
+            text-shadow: 4px 4px #444444; /* Bayangan piksel pada judul */
+        }
+
+        /* 5. Pembungkus Tombol Menu */
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Jarak antar tombol */
+        }
+
+        .sound-toggle {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.56rem;
+            padding: 0;
+            border: 4px solid #ffffff;
+            cursor: pointer;
+            outline: none;
+            z-index: 1000;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+            transform: translateY(0) scale(1);
+            touch-action: manipulation;
+            user-select: none;
+            box-shadow: 
+                -4px 0 0 0 #000000,
+                 4px 0 0 0 #000000,
+                 0 -4px 0 0 #000000,
+                 0  4px 0 0 #000000,
+                 4px 4px 0 0 #aaaaaa;
+        }
+
+        .sound-toggle:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                -4px 0 0 0 #000000,
+                 4px 0 0 0 #000000,
+                 0 -4px 0 0 #000000,
+                 0  4px 0 0 #000000,
+                 6px 6px 0 0 #cccccc;
+            animation: uiPulse 0.25s ease-in-out 1;
+        }
+
+        .sound-toggle:active {
+            transform: translate(3px, 3px) scale(0.98);
+            box-shadow: 
+                -4px 0 0 0 #000000,
+                 4px 0 0 0 #000000,
+                 0 -4px 0 0 #000000,
+                 0  4px 0 0 #000000,
+                 2px 2px 0 0 #666666;
+            animation: buttonPress 0.12s ease-in-out 1;
+        }
+
+        /* 6. Gaya Tombol Putih Tema Pixel */
+        .btn {
+            background-color: #ffffff; /* Warna tombol putih */
+            color: #000000; /* Teks warna hitam */
+            font-family: 'Press Start 2P', monospace; /* Font piksel */
+            font-size: 0.85rem;
+            padding: 16px 12px;
+            border: 4px solid #ffffff;
+            border-radius: 0; /* Sudut tegak lurus (kotak sempurna) */
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease, filter 0.12s ease;
+            transform: translateY(0) scale(1);
+            touch-action: manipulation;
+            user-select: none;
+            
+            /* Teknik bayangan bertingkat tajam khas Pixel Art */
+            box-shadow: 
+                -4px 0 0 0 #000000,
+                 4px 0 0 0 #000000,
+                 0 -4px 0 0 #000000,
+                 0  4px 0 0 #000000,
+                 4px 4px 0 0 #aaaaaa;
+        }
+
+        /* Efek saat kursor diarahkan ke tombol (Hover) */
+        .btn:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.02);
+            box-shadow: 
+                -4px 0 0 0 #000000,
+                 4px 0 0 0 #000000,
+                 0 -4px 0 0 #000000,
+                 0  4px 0 0 #000000,
+                 6px 6px 0 0 #cccccc;
+            animation: uiPulse 0.25s ease-in-out 1;
+        }
+
+        /* Efek saat tombol ditekan (Active) */
+        .btn:active {
+            transform: translate(3px, 3px) scale(0.98); /* Tombol sedikit bergeser ke bawah-kanan */
+            box-shadow: 
+                -4px 0 0 0 #000000,
+                 4px 0 0 0 #000000,
+                 0 -4px 0 0 #000000,
+                 0  4px 0 0 #000000,
+                 2px 2px 0 0 #666666;
+            animation: buttonPress 0.12s ease-in-out 1;
+        }
+
+        @keyframes buttonPress {
+            0% { transform: translate(0, 0) scale(1); }
+            30% { transform: translate(4px, 4px) scale(0.98); }
+            100% { transform: translate(3px, 3px) scale(0.98); }
+        }
+
+        @keyframes uiPulse {
+            0% { box-shadow: -4px 0 0 0 #000000, 4px 0 0 0 #000000, 0 -4px 0 0 #000000, 0 4px 0 0 #000000, 4px 4px 0 0 #aaaaaa; }
+            50% { box-shadow: -4px 0 0 0 #000000, 4px 0 0 0 #000000, 0 -4px 0 0 #000000, 0 4px 0 0 #000000, 8px 8px 0 0 #d9d9d9; }
+            100% { box-shadow: -4px 0 0 0 #000000, 4px 0 0 0 #000000, 0 -4px 0 0 #000000, 0 4px 0 0 #000000, 6px 6px 0 0 #cccccc; }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            .btn:hover,
+            .sound-toggle:hover {
+                transform: translateY(0) scale(1);
+                animation: none;
+            }
+
+            .btn:active,
+            .sound-toggle:active {
+                transform: translate(3px, 3px) scale(0.97);
+            }
+        }
+
+        .about-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 5;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            justify-items: center;
+            gap: 12px;
+            overflow-y: auto;
+            padding: 22px;
+            background:#f43131;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .about-screen[hidden] {
+            display: none;
+        }
+
+        .about-header {
+            width: min(100%, 900px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.58rem;
+        }
+
+        .about-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about-brand-mark {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border: 3px solid #000000;
+            background: #ffffff;
+            color: #f43131;
+            font-size: 1.1rem;
+            box-shadow: 4px 4px 0 #000000;
+        }
+
+        .about-edition {
+            color: #ffe4a8;
+        }
+
+        .about-content {
+            width: min(100%, 760px);
+            height: min(58vh, 480px);
+            min-height: 220px;
+            border: 4px solid #000000;
+            background: #ffffff;
+            box-shadow: 8px 8px 0 #000000;
+        }
+
+        .about-back {
+            margin: 4px 0 8px;
+        }
+
+        @media (max-width: 520px) {
+            .about-screen {
+                gap: 8px;
+                padding: 14px;
+            }
+
+            .about-header {
+                font-size: 0.48rem;
+            }
+
+            .about-brand-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .about-content {
+                height: min(58vh, 480px);
+                min-height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgm" src="soundtrack-lobi.mp3" loop preload="auto" playsinline></audio>
+
+    <!--tampilan buat lobi game-->
+    <div class="lobby-container">
+        <h1 class="game-title">PETUALANGAN KU</h1>
+        
+        <div class="menu-buttons">
+            <button class="btn" onclick="mulaiBermain()">PLAY</button>
+            <button class="btn" onclick="bukaPengaturan()">SETTING</button>
+            <button class="btn" onclick="bukaTentang()">ABOUT GAME</button>
+        </div>
+    </div>
+
+    <section id="aboutScreen" class="about-screen" aria-label="Tentang Game" hidden>
+        <header class="about-header">
+            <div class="about-brand">
+                <span class="about-brand-mark" aria-hidden="true">✦</span>
+                <span>PIXEL 2D-GAMES</span>
+            </div>
+        </header>
+
+        <div class="about-content" aria-hidden="true"></div>
+
+        <button class="btn about-back" type="button" onclick="kembaliKeMenu()">BACK</button>
+    </section>
+
+    <button id="soundToggle" class="sound-toggle" type="button">UNMUTE</button>
+
+    <!-- Logika Interaksi (JavaScript) -->
+    <script>
+        const bgm = document.getElementById('bgm');
+        const soundToggle = document.getElementById('soundToggle');
+        const lobby = document.querySelector('.lobby-container');
+        const aboutScreen = document.getElementById('aboutScreen');
+        let isMuted = true;
+
+        function playBgm() {
+            if (!bgm) return;
+            bgm.volume = 0.4;
+            bgm.muted = false;
+            bgm.currentTime = 0;
+            const playPromise = bgm.play();
+            if (playPromise && typeof playPromise.then === 'function') {
+                playPromise.catch(() => {
+                    setTimeout(() => {
+                        bgm.play().catch(() => {});
+                    }, 200);
+                });
+            }
+        }
+
+        function stopBgm() {
+            if (!bgm) return;
+            bgm.pause();
+            bgm.currentTime = 0;
+        }
+
+        function toggleSound() {
+            if (!bgm) return;
+
+            isMuted = !isMuted;
+            if (isMuted) {
+                bgm.muted = true;
+                bgm.pause();
+                soundToggle.textContent = 'UNMUTE';
+            } else {
+                bgm.muted = false;
+                soundToggle.textContent = 'MUTE';
+                playBgm();
+            }
+        }
+
+        soundToggle.addEventListener('click', toggleSound);
+
+        function mulaiBermain() {
+            stopBgm();
+            alert("Memulai permainan...");
+        }
+
+        function bukaPengaturan() {
+            stopBgm();
+            alert("Membuka menu Pengaturan...");
+        }
+
+        function bukaTentang() {
+            stopBgm();
+            lobby.hidden = true;
+            aboutScreen.hidden = false;
+        }
+
+        function kembaliKeMenu() {
+            aboutScreen.hidden = true;
+            lobby.hidden = false;
+        }
+    </script>
+
+</body>
+</html>
